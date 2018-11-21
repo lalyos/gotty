@@ -1,6 +1,6 @@
 OUTPUT_DIR = ./builds
 GIT_COMMIT = `git rev-parse HEAD | cut -c1-7`
-VERSION = 2.0.0-alpha.3
+VERSION = 2.0.0-alpha.4
 BUILD_OPTIONS = -ldflags "-X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
 
 gotty: main.go server/*.go webtty/*.go backend/*.go Makefile
@@ -80,7 +80,7 @@ release:
 	ghr -c ${GIT_COMMIT} --delete --prerelease -u yudai -r gotty pre-release ${OUTPUT_DIR}/dist
 
 kross:
-	gox -os="darwin linux" -arch=amd64 -output "./builds/pkg/{{.OS}}_{{.Arch}}/{{.Dir}}"
+	gox ${BUILD_OPTIONS} -os="darwin linux" -arch=amd64 -output "./builds/pkg/{{.OS}}_{{.Arch}}/{{.Dir}}"
 
 forkrelease: kross targz
-	ghr -c ${GIT_COMMIT} --delete -u lalyos -r gotty v2.0.0-alpha.3 ${OUTPUT_DIR}/dist	
+	ghr -c ${GIT_COMMIT} --delete --prerelease -u lalyos -r gotty v2.0.0-alpha.4 ${OUTPUT_DIR}/dist	
