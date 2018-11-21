@@ -78,3 +78,9 @@ shasums:
 
 release:
 	ghr -c ${GIT_COMMIT} --delete --prerelease -u yudai -r gotty pre-release ${OUTPUT_DIR}/dist
+
+kross:
+	gox -os="darwin linux" -arch=amd64 -output "./builds/pkg/{{.OS}}_{{.Arch}}/{{.Dir}}"
+
+forkrelease: kross targz
+	ghr -c ${GIT_COMMIT} --delete -u lalyos -r gotty v2.0.0-alpha.3 ${OUTPUT_DIR}/dist	
